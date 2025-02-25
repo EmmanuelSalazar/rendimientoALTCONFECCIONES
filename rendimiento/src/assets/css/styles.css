@@ -1,0 +1,15 @@
+#root {
+    width: 100%;
+}
+.formulario {
+    width: 100%;
+}
+.formularioConBotones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.numeroConPorcentaje {
+    width: 100%;
+    text-align: CENTER;
+}
