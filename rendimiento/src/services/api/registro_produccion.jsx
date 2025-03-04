@@ -7,9 +7,10 @@ const useFetchData = () => {
     const [datos, setData] = useState([]);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null);
-    const fetchData = useCallback(async (modulo) => {
+    const fetchData = useCallback(async (fecha, modulo, operarios) => {
+        //console.log(`DEBUG ULTIMO NIVEL: ${apiURL}/calcularEficienciaDiaria.php?fecha=${fecha}&modulo=${modulo}&operarios=${operarios}`)
         try {
-          const response = await axios.get(`${apiURL}/calcularEficienciaDiaria.php?modulo=${modulo}`);
+          const response = await axios.get(`${apiURL}/calcularEficienciaDiaria.php?fecha=${fecha}&modulo=${modulo}&operarios=${operarios}`);
           
           // Validar estructura de respuesta
           if (response.data?.ok && Array.isArray(response.data.respuesta)) {

@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react";
+import {useState, useCallback} from "react";
 import axios from 'axios';
 const EliminarOperario = () => {
     const apiURL = import.meta.env.VITE_API_URL;
@@ -12,7 +12,7 @@ const EliminarOperario = () => {
                 if (!response.data.ok) {
                     return console.error('Ha ocurrido un error, reinicie, si este persiste, contacte al administrador')
                 }
-                console.log(response.data.respuesta);
+                //console.log(response.data.respuesta);
                 setData(response.data.respuesta)
                 return response.data.respuesta
             }  catch (error) {

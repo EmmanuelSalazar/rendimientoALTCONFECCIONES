@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ListaContext } from '../contexts/informacionGrafico';
 import { Alert, Spinner } from 'react-bootstrap';
 
@@ -9,6 +10,11 @@ const HorizontalBarChart = () => {
     const nombre_operario = lista.map(persona => `${persona.nombre_operario}  (${persona.eficiencia})`);
     const totalUnidadesProducidas = lista.map(persona => persona.total_unidades_producidas);
     const totalMetaEficiencia = lista.map(persona => persona.total_meta_eficiencia);
+    const calcularValorMaximo = Math.max(
+      ...totalUnidadesProducidas,
+      ...totalMetaEficiencia
+    )
+    const valorMaximo = calcularValorMaximo + 10;
   const data = {
     labels: nombre_operario,
     datasets: [
@@ -32,42 +38,58 @@ const HorizontalBarChart = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     indexAxis: 'y',
     scales: {
         y: {
           ticks: {
             font: {
-              size: 20,
+              size: 28,
+              weight: 'bold'
             },
-            color: 'white',
+            color: 'black',
           },
         },
         x: {
+          max: valorMaximo,
           ticks: {
             font: {
-              size: 20
+              size: 20,
+              weight: 'bold'
             },
-            color: 'white'
+            color: 'black'
           },
         }
   },
   plugins: {
+    datalabels: {
+      display: true,
+      anchor: 'end',
+      align: 'end',
+      color: 'black',
+      font: {
+          size: 28,
+          weight: 'bold',
+      },
+      formatter: (value) => `${value}`,
+    },
     legend: {
       labels: {
         font: {
-          size: 16,
+          size: 20,
+          weight: 'bold'
         },
-        color: 'white'
+        color: 'black'
       },
     },
   },
 };
 
   const styles = {
-    width: '920px',
+    width: '1080px',
+    height: '680px',
     display: 'flex',
     justifyContent: 'center',
-    padding: '1rem'
   };
 
   if (loading) {
@@ -95,7 +117,7 @@ const HorizontalBarChart = () => {
 
   return (
     <div style={styles}>
-      <Bar data={data} options={options} />
+      <Bar data={data} options={options} plugins={[ChartDataLabels]}/>
     </div>
   );
 

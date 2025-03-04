@@ -10,7 +10,7 @@ export const ListaProvider = ({ children }) => {
     try {
       const nuevaLista = await fetchData();
       setLista([...nuevaLista]);
-      console.log('Nueva lista obtenida:', nuevaLista);
+      //Wconsole.log('Nueva lista obtenida:', nuevaLista);
     } catch (error) {
       console.error('Ha ocurrido un error al actualizar sus datos', error);
     }

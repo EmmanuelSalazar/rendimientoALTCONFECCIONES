@@ -5,15 +5,20 @@ const useFetchData = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null);
-    const fetchData = useCallback(async (modulo) => {
+    const fetchData = useCallback(async (modulo, redux) => {
         setLoading(true)
+        let moduloFinal = modulo ?? null;
+        let reduxFinal = redux ?? false;
             try {
-                const response = await axios.get(`${apiURL}/mostrarOperarios.php?modulo=`+modulo)
-                if (!response.data.ok) {
-                    return console.error('Ha ocurrido un error, reinicie, si este persiste, contacte al administrador')
+                //console.log(`DEBUG ULTIMO NIVEL: ${apiURL}/mostrarOperarios.php?modulo=${moduloFinal}&redux=${reduxFinal}`);
+                const response = await axios.get(`${apiURL}/mostrarOperarios.php?modulo=${moduloFinal}&redux=${reduxFinal}`)
+                if (response.data.ok) {
+                    setData(response.data.respuesta)
+                    return response.data.respuesta 
+                } else {
+                    console.error('Ha ocurrido un error, reinicie, si este persiste, contacte al administrador')
+                    return []
                 }
-                setData(response.data.respuesta)
-                return response.data.respuesta
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
                 console.error("Error al obtener datos:", error)

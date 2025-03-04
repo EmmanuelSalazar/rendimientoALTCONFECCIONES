@@ -53,7 +53,7 @@ const ListaOperarios = () => {
             "actividad": actividadRef.current.value
         };
         try {
-            await actualizarOperario(operarioSeleccionado.op_id, values);
+            await actualizarOperario(operarioSeleccionado.op_id, false, values);
             await actualizarLista();
             setMensajeDeExito("El operario ha sido actualizado con exito");
             setMostrar(null)
@@ -63,6 +63,7 @@ const ListaOperarios = () => {
     }
 
     const columns = [
+        { title: 'ID', dataIndex: 'op_id', key: 'op_id' },
         { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
         { title: 'Módulo', dataIndex: 'modulo', key: 'modulo' },
         { title: 'Estado', dataIndex: 'estado', key: 'estado' },

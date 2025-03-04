@@ -6,11 +6,11 @@ export const ListaProvider = ({ children }) => {
   const { data, loading, error, fetchData } = useFetchData();
   const [listaRegistro, setLista] = useState([]);
 
-  const setListaRegistro = async () => {
+  const setListaRegistro = async (modulo, fecha_inicio, fecha_final, hora_inicio, hora_fin) => {
     try {
-      const nuevaLista = await fetchData();
+      //console.log("DEBUG SEGUNDO NIVEL: ", modulo, fecha_inicio, fecha_final, hora_inicio, hora_fin);
+      const nuevaLista = await fetchData(modulo, fecha_inicio, fecha_final, hora_inicio, hora_fin);
       setLista([...nuevaLista]);
-      console.log('Nueva lista obtenida:', nuevaLista);
     } catch (error) {
       console.error('Ha ocurrido un error al actualizar sus datos', error);
     }

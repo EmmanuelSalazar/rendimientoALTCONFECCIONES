@@ -3,7 +3,7 @@ import { Button, Form, Alert, ButtonGroup, Col, Row } from 'react-bootstrap'
 import AlmacenarDatos from '../services/api/almacenarRegistroOperaciones'
 import { ListaContext as ContextoEnLista} from "../contexts/actualizarRegistroOperaciones";
 import { ListaContext, ListaProvider } from '../contexts/actualizarOperarios';
-
+import datos from '../utils/json/menuModulos.json'
 const RegistrarOperaciones = () => {
     const { lista, actualizarLista } = React.useContext(ListaContext);
     const { setListaRegistro } = React.useContext(ContextoEnLista);
@@ -25,9 +25,11 @@ const RegistrarOperaciones = () => {
             const unidadesProducidasRef = useRef();
             const formRef = useRef(null);
              const handleButtonClick = async (modulo, index) => {
+                window.moduloSeleccionado = modulo;
                 setBotonSeleccionado(index);
         try {
-            await actualizarLista(modulo);
+            await actualizarLista(modulo, true);
+            await setListaRegistro(modulo)
         } catch (error) {
             console.error("Ha ocurrido un error: ", error)
         }
@@ -38,9 +40,10 @@ const RegistrarOperaciones = () => {
                     "operario": operarioRef.current.value,
                     "unidadesProducidas": unidadesProducidasRef.current.value
                 };
-                try {
+                try {   
                     await AlmacenarDatos(values)
-                    await setListaRegistro();
+                    await setListaRegistro(window.moduloSeleccionado);
+                    await actualizarLista(window.moduloSeleccionado, true)
                    setMensajeExito("El registro se ha guardado correctamente");
                    formRef.current.reset();
                 } catch (error) {
@@ -49,12 +52,7 @@ const RegistrarOperaciones = () => {
                 }
             } 
         /* CONFIGURACION BOTONES */
-        const botones = [
-            { label: 'Módulo 1', value: 1 },
-            { label: 'Módulo 2', value: 2 },
-            { label: 'Módulo 3', value: 3 },
-            { label: 'Módulo 4', value: 4 }
-          ];
+        const botones = datos;
         /* ------------------------- */
         return (
             <Col className="formularioConBotones">
@@ -72,7 +70,7 @@ const RegistrarOperaciones = () => {
                         <Form.Select required ref={operarioRef}>
                             {lista.map((dato, index) => (
                                 <option value={dato.op_id}>{dato.nombre}</option>
-                            ))}
+                            ))}z
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="m-5">

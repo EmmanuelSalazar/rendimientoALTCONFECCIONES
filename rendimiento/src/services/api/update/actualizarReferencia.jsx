@@ -1,17 +1,16 @@
 import {useState, useEffect, useCallback} from "react";
 import axios from 'axios';
 
-const ActualizarOperario = () => {
+const ActualizarReferencia = () => {
     const apiURL = import.meta.env.VITE_API_URL;
 
     const [datos, setData] = useState([]);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null);
-    const actualizarOperario = useCallback(async (id, actualizarContador,values) => {
-      let operarioContador = actualizarContador ?? false;
+    const actualizarReferencia = useCallback(async (values) => {
       let informacion = values ?? {};
         try {
-          const response = await axios.put(`${apiURL}/UPDATE/actualizarOperario.php?id=${id}&operarioContador=${operarioContador}`, informacion);
+          const response = await axios.put(`${apiURL}/UPDATE/actualizarReferencia.php`, informacion);
           
           // Validar estructura de respuesta
           if (response.data.ok && Array.isArray(response.data.respuesta)) {
@@ -28,8 +27,8 @@ const ActualizarOperario = () => {
         }
       }, [apiURL]);
         useEffect(() => {
-            actualizarOperario();
-        }, [actualizarOperario]);
-        return {datos, error, actualizarOperario}
+            actualizarReferencia();
+        }, [actualizarReferencia]);
+        return {datos, error, actualizarReferencia}
 }
-export default ActualizarOperario;
+export default ActualizarReferencia;

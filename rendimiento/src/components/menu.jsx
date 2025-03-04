@@ -1,33 +1,68 @@
 import React, { useState } from 'react'
-import { Menu } from 'antd'
+import { Menu, ConfigProvider } from 'antd'
+import { CaretDownOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
-
+import { ListaProvider, ListaContext } from "../contexts/informacionGrafico";
 const items = [
-    {
-        label: <NavLink to="/modulo">Modulos</NavLink>,
-        key: 'modulos',
+        {
+            label: <NavLink to="/modulo" className="noDecorativos">Modulos</NavLink>,
+            key: 'modulos',
+            icon: <CaretDownOutlined />,
+            children: [
+              {
+                label: <NavLink to="/modulo" className="noDecorativos">Modulo 1</NavLink>,
+                key: '1'
+              },
+              {
+                label: <NavLink to="/modulo" className="noDecorativos">Modulo 2</NavLink>,
+                key: '2'
+              },
+              {
+                label: <NavLink to="/modulo" className="noDecorativos">Modulo 2</NavLink>,
+                key: '3'
+              },
+              {
+                label: <NavLink to="/modulo" className="noDecorativos">Modulo 3</NavLink>,
+                key: '4'
+              }
+            ]
         },{
-            label: <NavLink to="/referencias">Referencias</NavLink>,
-            key: 'referencias'
+            label: <NavLink to="/referencias" className="noDecorativos">Referencias</NavLink>,
+            key: 'referencias',
+            
         },{
-            label: <NavLink to="/operarios">Operarios</NavLink>,
+            label: <NavLink to="/operarios" className="noDecorativos">Operarios</NavLink>,
             key: 'operarios'
         },{
-          label: <NavLink to="/registro_operaciones">Registrar operaciones</NavLink>,
+          label: <NavLink to="/registro_operaciones" className="noDecorativos">Registrar operaciones</NavLink>,
           key: 'operaciones'
       },{
-        label: <NavLink to="/tablaRegistros">Tabla de registros</NavLink>,
+        label: <NavLink to="/tablaRegistros" className="noDecorativos">Tabla de registros</NavLink>,
         key: 'tablaRegistros'
     }
 ];
 
+
 const MenuPrincipal = () => {
-    const [current, setCurrent] = useState('modulos');
-  const onClick = (e) => {
-    console.log('click ', e);
-    setCurrent(e.key);
+  const { actualizarLista } = React.useContext(ListaContext);
+  const [current, setCurrent] = useState('modulos');
+  const onClick =  async (e) => {
+    const { key } = e;
+    let moduloSeleccionado = parseInt(key) ?? null;
+    if (typeof moduloSeleccionado === 'number') {
+      try  {
+        await actualizarLista(null, moduloSeleccionado);
+      } catch (error) {
+        console.error("Ha ocurrido un error: ", error)
+      }
+    } else {
+    }
+    setCurrent(key);
   };
-  return <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />;
+  return (
+        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+
+);
 }
 export default MenuPrincipal
 

@@ -7,7 +7,7 @@ const AlmacenarOperario = async (values) => {
     if (!response.data.ok) {
       throw new Error("Ha ocurrido un error al almacenar la venta, si el error persiste, contacta al administrador")
     }
-    console.log("Datos almacenados correctamente:", response.data)
+    //console.log("Datos almacenados correctamente:", response.data)
     return response.data
   } catch (error) {
     console.error("Error al enviar los datos", error)

@@ -8,15 +8,14 @@ const useFetchData = () => {
     const fetchData = useCallback(async () => {
         setLoading(true)
             try {
-                const response = await axios.get(`${apiURL}/mostrarReferencias.php`)
+                const response = await axios.get(`${apiURL}/READ/mostrarContadoresFinales.php`)
                 if (response.data.ok) {
                     setData(response.data.respuesta)
                     return response.data.respuesta
-                } else {
-                    console.error('Ha ocurrido un error, reinicie, si este persiste, contacte al administrador')
-                    return [];
+                } else{
+                    console.error('Ha ocurrido un error: ', response.data)
+                    return []
                 }
-                
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
                 console.error("Error al obtener datos:", error)

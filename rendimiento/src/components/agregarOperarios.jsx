@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { Button, Form, Alert } from 'react-bootstrap'
 import AlmacenarOperario from '../services/api/almacenarOperario'
 import { ListaContext } from "../contexts/actualizarOperarios";
 
 const AgregarOperarios = () => {
-        const { actualizarLista } = React.useContext(ListaContext);
+        const { actualizarLista } = useContext(ListaContext);
 
         const [mensajeExito, setMensajeExito] = useState("");
         useEffect(() => {
