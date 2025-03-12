@@ -1,7 +1,7 @@
 {
-  "name": "rendimiento",
+  "name": "alt-rendimiento",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.3.2",
   "type": "module",
   "scripts": {
     "dev": "vite --host",

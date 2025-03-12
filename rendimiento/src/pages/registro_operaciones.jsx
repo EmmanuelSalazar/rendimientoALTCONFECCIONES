@@ -3,13 +3,18 @@ import RegistrarOperaciones from '../components/registrarOperaciones'
 import ListaRegistroOperaciones from "../components/listaRegistroOperaciones";
 import { ListaProvider } from "../contexts/actualizarOperarios";
 import { ListaProvider as ProveedorLista } from "../contexts/actualizarRegistroOperaciones";
+import { ListaProvider as ProveedorLista2 } from "../contexts/actualizarReferencias";
 import { Col, Row, Container } from 'react-bootstrap';
+import BotonesSelModRegOp from '../components/botonesSeleccion/botonesSeleccionRegistroOperaciones'
 function RegistroOperaciones() {
     return (
-        
-        <Container className="p-2 align-items-space-around">
+        <Container className="py-3 align-items-space-around">
            <ListaProvider>
             <ProveedorLista>
+                <ProveedorLista2>
+                <Row className="mb-5">
+                    <BotonesSelModRegOp />
+                </Row>
                 <Row>
                     <Col lg="5" className="formulario">
                         <RegistrarOperaciones />
@@ -18,6 +23,7 @@ function RegistroOperaciones() {
                         <ListaRegistroOperaciones />
                     </Col>
                 </Row>
+                </ProveedorLista2>
             </ProveedorLista>
           </ListaProvider> 
        </Container>

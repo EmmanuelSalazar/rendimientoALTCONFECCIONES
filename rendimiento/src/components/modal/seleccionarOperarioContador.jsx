@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Modal, Input, Form, Alert } from 'antd'
+import { Modal, Input, Form, Alert } from 'antd'
+import { Button } from "react-bootstrap";
 import ListaContadoresFinales from "../listaContadoresFinales";
 import ActualizarOperario from "../../services/api/update/actualizarOperario";
 const PanelAdministrativo = () => {
@@ -55,14 +56,14 @@ const PanelAdministrativo = () => {
     }
     return (
         <>
-            <Button type="primary" onClick={showModal}>Panel Administrativo</Button>
-            <Modal title="Panel administrativo" open={visible} onOk={handleOk} onCancel={handleCancel} width={{xl: '70%', xxl: '70%'}}> 
+            <Button size="sm" variant="primary" onClick={showModal}>Operarios que funcionan como contadores</Button>
+            <Modal title="Operarios que funcionan como contadores" open={visible} onOk={handleOk} onCancel={handleCancel} width={{xl: '70%', xxl: '70%'}}> 
             {mensajeDeExito && <Alert message={mensajeDeExito} type="success" showIcon />}
             <ListaContadoresFinales />
-            <Button type="primary" onClick={showSubModal}>Actualizar operario</Button>
+            <Button type="primary" onClick={showSubModal}>Actualizar operarios que funcionan como contadores</Button>
             <Modal title="Actualizar el operario con el que se calcula la eficiencia" open={subVisibleModal} onOk={handleSubOk} onCancel={handleSubCancel} width={{xl: '40%', xxl: '40%'}}>
                 <Form>
-                    <Form.Item label="Ingrese el ID del operario" name="op_id" rules={[{ required: true}]} help="Al actualizar los datos, se eliminará al antiguo operario que funcionaba como contador">
+                    <Form.Item label="Ingrese el ID del operario" name="op_id" rules={[{ required: true}]} help="Al actualizar los datos, se eliminará al antiguo operario que funcionaba como contador en el modulo">
                         <Input type="number" placeholder="Este número lo consigues en la pestaña 'operarios'" onChange={handleChange}/>
                     </Form.Item>
                 </Form>

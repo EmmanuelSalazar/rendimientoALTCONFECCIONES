@@ -37,7 +37,7 @@ const GraficaAdministrativa = () => {
             y: {
               ticks: {
                 font: {
-                  size: 28,
+                  size: 16,
                   weight: 'bold'
                 },
                 color: 'black',
@@ -46,7 +46,7 @@ const GraficaAdministrativa = () => {
             x: {
               ticks: {
                 font: {
-                  size: 20,
+                  size: 16,
                   weight: 'bold'
                 },
                 color: 'black'
@@ -57,7 +57,7 @@ const GraficaAdministrativa = () => {
         legend: {
           labels: {
             font: {
-              size: 20,
+              size: 16,
               weight: 'bold'
             },
             color: 'black'

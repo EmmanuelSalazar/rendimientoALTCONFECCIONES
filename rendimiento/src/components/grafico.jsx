@@ -14,7 +14,7 @@ const HorizontalBarChart = () => {
       ...totalUnidadesProducidas,
       ...totalMetaEficiencia
     )
-    const valorMaximo = calcularValorMaximo + 10;
+    const valorMaximo = calcularValorMaximo + 50;
   const data = {
     labels: nombre_operario,
     datasets: [
@@ -47,7 +47,7 @@ const HorizontalBarChart = () => {
               size: 28,
               weight: 'bold'
             },
-            color: 'black',
+            color: 'white',
           },
         },
         x: {
@@ -57,7 +57,7 @@ const HorizontalBarChart = () => {
               size: 20,
               weight: 'bold'
             },
-            color: 'black'
+            color: 'white'
           },
         }
   },
@@ -66,7 +66,7 @@ const HorizontalBarChart = () => {
       display: true,
       anchor: 'end',
       align: 'end',
-      color: 'black',
+      color: 'white',
       font: {
           size: 28,
           weight: 'bold',
@@ -79,15 +79,15 @@ const HorizontalBarChart = () => {
           size: 20,
           weight: 'bold'
         },
-        color: 'black'
+        color: 'white'
       },
     },
   },
 };
 
   const styles = {
-    width: '1080px',
-    height: '680px',
+    width: '1170px',
+    height: '720px',
     display: 'flex',
     justifyContent: 'center',
   };
@@ -114,7 +114,6 @@ const HorizontalBarChart = () => {
       </div>
     );
   }
-
   return (
     <div style={styles}>
       <Bar data={data} options={options} plugins={[ChartDataLabels]}/>

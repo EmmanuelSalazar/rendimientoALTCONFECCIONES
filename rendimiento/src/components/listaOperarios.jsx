@@ -7,44 +7,49 @@ import { Alert, Button, Modal, Form } from 'react-bootstrap';
 
 const ListaOperarios = () => {
     const { lista, loading, error, actualizarLista } = useContext(ListaContext);
-    const [mensajeDeExito, setMensajeDeExito] = useState("");
     const [mostrar, setMostrar] = useState(false);
     const [operarioSeleccionado, setOperarioSeleccionado] = useState(null);
     const { fetchData } = EliminarOperario();
     const { actualizarOperario } = ActualizarOperario();
+    // ALMACENAR DATOS DE FORMULARIO
     const nombreOperarioRef = useRef();
     const moduloRef = useRef();
     const actividadRef = useRef();
+    // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
+    const [mensajeDeExito, setMensajeDeExito] = useState("");
+    const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
+    const [mensajeDeError, setMensajeDeError] = useState("");
     useEffect(() => {
-        if (mensajeDeExito) {
+        if (mensajeDeExito || mensajeDeAlerta || mensajeDeError) {
             const timer = setTimeout(() => {
                 setMensajeDeExito("");
+                setMensajeDeError("");
+                setMensajeDeAlerta("");
             }, 3000);
-
             return () => clearTimeout(timer);
         }
-    }, [mensajeDeExito]);
-
+    }, [mensajeDeExito, mensajeDeAlerta, mensajeDeError]);
+    // FUNCION BOTON "ELIMINAR"
     const handleDelete = async (id) => {
         try {
             await fetchData(id);
             await actualizarLista();
-            setMensajeDeExito("El operario ha sido eliminado con éxito");
+            setMensajeDeAlerta("El operario ha sido eliminado");
         } catch (error) {
             console.error("Ha ocurrido un error: ", error);
         }
     };
-
+    // ABRIR MODAL Y CARGAR INFORMACION
     const handleShow = (operario) => {
         setOperarioSeleccionado(operario); 
         setMostrar(true)
     };
-
+    // CERRAR MODAL
     const handleClose = () => {
         setOperarioSeleccionado(null); 
         setMostrar(false); 
     };
-    
+    // ENVIAR INFORMACION DEL MODAL
     const handleSubmit = async (e) => {
         e.preventDefault();
         const values = {
@@ -58,10 +63,11 @@ const ListaOperarios = () => {
             setMensajeDeExito("El operario ha sido actualizado con exito");
             setMostrar(null)
         } catch (error) {
+            setMensajeDeError("Ha ocurrido un error: ", error);
             console.error("Ha ocurrido un error: ", error);
         }
     }
-
+    // COLUMNAS DE LA TABLA
     const columns = [
         { title: 'ID', dataIndex: 'op_id', key: 'op_id' },
         { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
@@ -88,7 +94,9 @@ const ListaOperarios = () => {
 
     return (
         <div>
-            {mensajeDeExito && <Alert variant="warning">{mensajeDeExito}</Alert>}
+            {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
+            {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
+            {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
             <Table dataSource={lista} columns={columns} rowKey="op_id" />
 
             {/* Modal */}

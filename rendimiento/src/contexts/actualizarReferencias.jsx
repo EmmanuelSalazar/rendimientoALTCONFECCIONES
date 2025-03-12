@@ -4,11 +4,12 @@ export const ListaContext = createContext();
 
 export const ListaProvider = ({ children }) => {
   const { data, loading, error, fetchData } = useFetchData();
-  const [lista, setLista] = useState([]);
+  const [listas, setLista] = useState([]);
 
-  const actualizarLista = async () => {
+  const actualizarListas = async (modulo) => {
+    let moduloConsultado = modulo ?? null;
     try {
-      const nuevaLista = await fetchData();
+      const nuevaLista = await fetchData(moduloConsultado);
       setLista([...nuevaLista]);
       //Wconsole.log('Nueva lista obtenida:', nuevaLista);
     } catch (error) {
@@ -17,11 +18,11 @@ export const ListaProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    actualizarLista();
+    actualizarListas();
   }, [fetchData]);
 
   return (
-    <ListaContext.Provider value={{ lista, loading, error, actualizarLista }}>
+    <ListaContext.Provider value={{ listas, loading, error, actualizarListas }}>
       {children}
     </ListaContext.Provider>
   );

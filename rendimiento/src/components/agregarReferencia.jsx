@@ -3,7 +3,7 @@ import { Button, Form, Alert } from 'react-bootstrap'
 import AlmacenarDatos from '../services/api/almacenarReferencia'
 import { ListaContext } from '../contexts/actualizarReferencias';
 const AgregarReferencia = () => {
-    const { actualizarLista } = React.useContext(ListaContext);
+    const { actualizarListas } = React.useContext(ListaContext);
     const [mensajeExito, setMensajeExito] = useState("");
     useEffect(() => {
         if (mensajeExito) {
@@ -31,8 +31,8 @@ const AgregarReferencia = () => {
             'modulo': modulo,
         }
         try {
-            const response = await AlmacenarDatos(values)
-            await actualizarLista();
+            await AlmacenarDatos(values)
+            await actualizarListas();
             setMensajeExito("La Referencia se ha almacenado correctamente");
             formRef.current.reset();
         } catch (error){
@@ -43,7 +43,7 @@ const AgregarReferencia = () => {
         
     }
     return (
-                <Form className="m-5" style={{width: '100%'}} onSubmit={handleSubmit} ref={formRef}>
+            <Form className="m-5" style={{width: '100%'}} onSubmit={handleSubmit} ref={formRef}>
                                     {mensajeExito && <Alert variant="success">{mensajeExito}</Alert>}
                 <Form.Group className="m-5">
                     <Form.Label>Ingresa el codigo de referencia</Form.Label>
@@ -51,14 +51,18 @@ const AgregarReferencia = () => {
                 </Form.Group>
                 <Form.Group className="m-5">
                     <Form.Label>Ingresa el tiempo de esta tarea</Form.Label>
-                    <Form.Control type="number" placeholder="Tiempo en minutos" required ref={tiempoTareaRef}/>
+                    <Form.Control type="number" placeholder="Tiempo en minutos" required ref={tiempoTareaRef} step="any"/>
                 </Form.Group>
                 <Form.Group className="m-5">
                     <Form.Label>Ingresa el modulo al cual pertenece</Form.Label>
                     <Form.Control type="number" placeholder="Ej: 1" required ref={moduloRef}/>
+                    <Form.Text>Las referencias recien registradas se marcan como <strong>inactivas</strong>, deberás <strong>activarlas</strong> manualmente</Form.Text>
                 </Form.Group>
-                <Button className="mx-5" variant="primary" type="submit">Registrar referencia</Button>
-                </Form>
+                <Form.Group>
+                    <Button className="mx-5" variant="primary" type="submit">Registrar referencia</Button>
+                </Form.Group>
+
+            </Form>
     )
 }
 export default AgregarReferencia

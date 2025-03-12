@@ -4,17 +4,20 @@ import TablaRegistros from '../components/listaRegistro'
 import { ListaProvider} from "../contexts/actualizarRegistros";
 import { ListaProvider as ProveedorDeLista } from '../contexts/informacionGrafico'
 import { ListaProvider as ProveedorDeLista2 } from '../contexts/actualizarRegistroOperaciones'
+import { ListaProvider as ProveedorDeLista3 } from '../contexts/actualizarReferencias'
 import BotonesSeleccionModulos from '../components/botonesSeleccion/botonesSeleccionModuloAdmin'
 import CalendarioSeleccion from "../components/calendarioSeleccionAdmin";
 import GraficaAdministrativa from "../components/graficos/graficoAdmin";
 import FechasDuales from "../components/modalAdmin";
 import PanelAdministrativo from '../components/modal/seleccionarOperarioContador'
+import TiempoDeMontaje from "../components/modal/ingresarTiempoDeMontaje";
 function TablaRegistro() {
 
     return (
         <Container className="mt-2">
+            <ProveedorDeLista3>
             <ListaProvider>
-                <ProveedorDeLista>
+            <ProveedorDeLista>
                 <Row className="my-2 ">
                     <BotonesSeleccionModulos />
                 </Row>
@@ -31,16 +34,21 @@ function TablaRegistro() {
                 </Row>
                 <Row>
                     <Col lg={12} xs={12} md={6} className="bg-primary bg-opacity-50 rounded border border-primary my-2">
-                    <GraficaAdministrativa />
+                        <GraficaAdministrativa />
                     </Col>
                 </Row>
-                </ProveedorDeLista>
+            </ProveedorDeLista>
             </ListaProvider>
-                <Row>
+                <Row className="mb-2">
                     <Col lg={3}>
-                    <PanelAdministrativo />
+                        <PanelAdministrativo />
+                    </Col>
+                    <Col>
+                        <TiempoDeMontaje />
                     </Col>
                 </Row>
+            </ProveedorDeLista3>
+
         </Container>
     )
 }

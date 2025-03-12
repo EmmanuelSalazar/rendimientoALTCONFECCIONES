@@ -5,10 +5,11 @@ const useFetchData = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null);
-    const fetchData = useCallback(async () => {
+    const fetchData = useCallback(async (modulo) => {
+        let moduloConsultado = modulo ?? null;
         setLoading(true)
             try {
-                const response = await axios.get(`${apiURL}/mostrarReferencias.php`)
+                const response = await axios.get(`${apiURL}/mostrarReferencias.php?modulo=${moduloConsultado}`);
                 if (response.data.ok) {
                     setData(response.data.respuesta)
                     return response.data.respuesta

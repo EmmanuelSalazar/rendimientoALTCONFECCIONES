@@ -20,3 +20,12 @@
     text-decoration: none;
     
 }
+.notificacion {
+    max-width: max-content;
+    overflow-x:hidden;
+    display: flex;
+    gap: 0.5rem;
+}
+.notificacion > div {
+    min-width: 49%;
+}

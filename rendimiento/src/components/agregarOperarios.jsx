@@ -15,7 +15,7 @@ const AgregarOperarios = () => {
               
                   return () => clearTimeout(timer);
                 }
-            }, [mensajeExito]);
+        }, [mensajeExito]);
             const nombreOperarioRef = useRef();
             const moduloRef = useRef();
             const formRef = useRef(null);
@@ -27,8 +27,8 @@ const AgregarOperarios = () => {
                     "modulo": moduloRef.current.value
                 };
                 try {
-                    const response = await AlmacenarOperario(values)
-                    const modulo = 0;
+                    await AlmacenarOperario(values)
+                    const modulo = window.ModuloSeleccionado;
                     await actualizarLista(modulo);
                     setMensajeExito("El operario se ha guardado correctamente");
                     formRef.current.reset();
