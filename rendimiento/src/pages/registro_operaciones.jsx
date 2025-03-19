@@ -1,6 +1,6 @@
 import React from "react";
-import RegistrarOperaciones from '../components/registrarOperaciones'
-import ListaRegistroOperaciones from "../components/listaRegistroOperaciones";
+import RegistrarOperaciones from '../components/formularios/registrarOperaciones'
+import ListaRegistroOperaciones from "../components/listas/listaRegistroOperaciones";
 import { ListaProvider } from "../contexts/actualizarOperarios";
 import { ListaProvider as ProveedorLista } from "../contexts/actualizarRegistroOperaciones";
 import { ListaProvider as ProveedorLista2 } from "../contexts/actualizarReferencias";
@@ -10,21 +10,21 @@ function RegistroOperaciones() {
     return (
         <Container className="py-3 align-items-space-around">
            <ListaProvider>
-            <ProveedorLista>
-                <ProveedorLista2>
-                <Row className="mb-5">
-                    <BotonesSelModRegOp />
-                </Row>
-                <Row>
-                    <Col lg="5" className="formulario">
-                        <RegistrarOperaciones />
-                    </Col>
-                    <Col lg="7">
-                        <ListaRegistroOperaciones />
-                    </Col>
-                </Row>
-                </ProveedorLista2>
-            </ProveedorLista>
+                <ProveedorLista>
+                    <ProveedorLista2>
+                        <Row className="mb-5">
+                            <BotonesSelModRegOp />
+                        </Row>
+                        <Row>
+                            <Col lg="5" className="formulario">
+                                <RegistrarOperaciones />
+                            </Col>
+                            <Col lg="7">
+                                <ListaRegistroOperaciones />
+                            </Col>
+                        </Row>
+                    </ProveedorLista2>
+                </ProveedorLista>
           </ListaProvider> 
        </Container>
     )

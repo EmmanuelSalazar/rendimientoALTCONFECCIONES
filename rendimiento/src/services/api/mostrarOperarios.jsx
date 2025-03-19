@@ -22,6 +22,7 @@ const useFetchData = () => {
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
                 console.error("Error al obtener datos:", error)
+                throw error;
                 return [];
             } finally {
                 setLoading(false)

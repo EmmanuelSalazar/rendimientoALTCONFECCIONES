@@ -1,5 +1,3 @@
-import React from "react";
-
 const FechaActual = () => {
     const formatearFecha = (num) => {
         return num < 10 ? `0${num}` : `${num}`;

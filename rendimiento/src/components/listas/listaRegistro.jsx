@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Table, Button } from 'antd'
-import { ListaContext } from "../contexts/actualizarRegistros";
-import { ListaContext as ContextoEnLista } from "../contexts/informacionGrafico";
+import { Table } from 'antd'
+import { Button, Stack } from 'react-bootstrap';
+import { ListaContext } from "../../contexts/actualizarRegistros";
+import { ListaContext as ContextoEnLista } from "../../contexts/informacionGrafico";
+import ExportToExcel from "../exportarExcel";
 const columns = [
     { title: 'Operario', dataIndex: 'Operario', render: (text) => <a>{text}</a>},
     { title: '7 am', dataIndex: '7 AM', key: '7 am'},
@@ -18,20 +20,27 @@ const columns = [
 
 
 const TablaRegistros = () => {
+    // CONTEXTOS
     const { lista } = useContext(ListaContext);
     const { actualizarLista } = useContext(ContextoEnLista);
+    //
     const [seleccionados, setSeleccionados] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [mensajeDeError, setMensajeDeError] = useState("");
-    useEffect(() => {
-        if (mensajeDeError) {
-            const timer = setTimeout(() => {
-                setMensajeDeError("");
-            }, 3000);
-        return () => clearTimeout(timer);
-        }
-    }, [mensajeDeError]);
-
+     // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
+     const [mensajeDeExito, setMensajeDeExito] = useState("");
+     const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
+     const [mensajeDeError, setMensajeDeError] = useState("");
+     useEffect(() => {
+         if (mensajeDeExito || mensajeDeAlerta || mensajeDeError) {
+             const timer = setTimeout(() => {
+                 setMensajeDeExito("");
+                 setMensajeDeError("");
+                 setMensajeDeAlerta("");
+             }, 3000);
+             return () => clearTimeout(timer);
+         }
+     }, [mensajeDeExito, mensajeDeAlerta, mensajeDeError]);
+     // CONSEGUIR EFICIENCIA POR OPERARIOS
     const realizarBusqueda = async () => {
         setLoading(true);
         try {
@@ -45,12 +54,12 @@ const TablaRegistros = () => {
             setLoading(false);
         }, 1000);
     }
-
+    // ALMACENAR USUARIOS POR MEDIR EFICIENCIA
     const onSelectChange = (nuevosSeleccionados) => {
         const jsonSeleccionados = nuevosSeleccionados.join();
         setSeleccionados(jsonSeleccionados)
     }
-
+    // MANEJO DE FILA
     const rowSelection = {
         seleccionados,
         onChange: onSelectChange
@@ -59,7 +68,11 @@ const TablaRegistros = () => {
         <>
             {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
             <Table rowSelection={rowSelection} dataSource={lista} columns={columns} rowKey="op_id" size="middle"/>
-            <Button type="primary" onClick={realizarBusqueda} loading={loading}>Buscar</Button>
+            <Stack direction="horizontal" gap={2} className="my-2">
+                <Button variant="primary" onClick={realizarBusqueda} loading={loading}>Buscar</Button>
+                <ExportToExcel datos={lista} />
+            </Stack>
+            
         </>
     );
 }

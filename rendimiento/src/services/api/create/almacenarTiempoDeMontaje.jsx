@@ -1,6 +1,5 @@
 import axios from "axios"
-
-  const apiURL = import.meta.env.VITE_API_URL;
+const apiURL = import.meta.env.VITE_API_URL;
   const AlmacenarTiempoDeMontaje = async (datos) => {
     let datosAlmacenados = datos ?? {};
         try {
@@ -10,7 +9,6 @@ import axios from "axios"
             } else {
                 throw new Error(response.data.respuesta ?? "Ha ocurrido un error al realizar la solicitud");
             }
-            //console.log("Datos almacenados correctamente:", response.data)
         } catch (error) {
             console.error("Error al enviar los datos", error)
             setRespuesta('Ha ocurrido un error: ', error);

@@ -1,41 +1,45 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { ListaContext } from '../contexts/actualizarRegistroOperaciones';
+import { ListaContext } from '../../contexts/actualizarRegistroOperaciones';
 import { Table, Input, Button, Space } from 'antd';
 import { Button as ButtonBS, Modal, Form, Alert } from 'react-bootstrap';
 import { SearchOutlined } from '@ant-design/icons';
-import { ListaContext as ListaContexto} from "../contexts/actualizarReferencias";
-import ActualizarRegistroOperacion from '../services/api/update/actualizarRegistroOperacion';
-import EliminarRegistroOperacion from '../services/api/delete/eliminarRegistroOperacion';
-
+import { ListaContext as ListaContexto} from "../../contexts/actualizarReferencias";
+import ActualizarRegistroOperacion from '../../services/api/update/actualizarRegistroOperacion';
+import EliminarRegistroOperacion from '../../services/api/delete/eliminarRegistroOperacion';
+import horarios from '../../utils/json/horarios.json';
 const ListaRegistroOperaciones = () => {
+    // CONTEXTOS
     const { fetchData, data } = EliminarRegistroOperacion();
     const { actualizarRegistroOperacion } = ActualizarRegistroOperacion();
-    const { listas } = React.useContext(ListaContexto);
+    const { listas, actualizarListas } = React.useContext(ListaContexto);
     const { listaRegistro, loading, error, setListaRegistro } = useContext(ListaContext);
+    //
     const [visible, setVisible] = useState(false);
     const [registroSeleccionado, setRegistroSeleccionado] = useState("");
-    const [mensajeDeExito, setMensajeDeExito] = useState("");
-    const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
     // Almacenar Formulario
-    const nombreOperarioRef = useRef();
     const referenciaRef = useRef();
     const unidadesProducidasRef = useRef();
     const horarioRef = useRef();
     // Estado para almacenar el valor del filtro
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
-    // Funcion que limita el tiempo de mensaje Exito/Aviso/Error
-        useEffect(() => {
-                if (mensajeDeExito || mensajeDeAlerta) {
-                    const timer = setTimeout(() => {
-                        setMensajeDeExito("");
-                        setMensajeDeAlerta("");
-                    }, 3000);
-                return () => clearTimeout(timer);
-                }
-            }, [mensajeDeExito, mensajeDeAlerta]);
+    // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
+    const [mensajeDeExito, setMensajeDeExito] = useState("");
+    const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
+    const [mensajeDeError, setMensajeDeError] = useState("");
+    useEffect(() => {
+        if (mensajeDeExito || mensajeDeAlerta || mensajeDeError) {
+            const timer = setTimeout(() => {
+                setMensajeDeExito("");
+                setMensajeDeError("");
+                setMensajeDeAlerta("");
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [mensajeDeExito, mensajeDeAlerta, mensajeDeError]);
     // Función para mostrar el modal
     const showModal = (registro) => {
+        actualizarListas(registro.modulo, true)
         setRegistroSeleccionado(registro)
         setVisible(true)
     }
@@ -47,11 +51,11 @@ const ListaRegistroOperaciones = () => {
     const handleDelete = async (id) => {
         try {
             await fetchData(id);
-            await setListaRegistro();
-            setMensajeDeAlerta(data);  
+            await setListaRegistro(window.moduloSeleccionado);
+            setMensajeDeAlerta(data || "El registro se la eliminado con exito");  
         } catch (error) {
             console.log("Ha ocurrido un error: ", error)
-            setMensajeDeAlerta("Ha ocurrido un error al eliminar el registro: ", error);
+            setMensajeDeError("Ha ocurrido un error al eliminar el registro: ", error);
         }
     }
 
@@ -65,10 +69,11 @@ const ListaRegistroOperaciones = () => {
         }
         try {
             await actualizarRegistroOperacion(values);
-            await setListaRegistro();
+            await setListaRegistro(window.moduloSeleccionado);
             setVisible(false)
             setMensajeDeExito("El registro ha sido modificado con exito");
         } catch (error) {
+            setMensajeDeError("Ha ocurrido un error, si este persiste, contacte al administrador: ", error);
             console.log("Ha ocurrido un error: ", error)
         }
     }
@@ -124,7 +129,7 @@ const ListaRegistroOperaciones = () => {
         { title: 'Unidades producidas', dataIndex: 'unidadesProducidas', key: 'unidadesProducidas' },
         { title: 'Meta de eficiencia', dataIndex: 'metaAjustada', key: 'metaAjustada' },
         { title: 'Eficiencia', dataIndex: 'eficiencia', key: 'eficiencia' },
-        { title: 'Acciones', key: 'acciones',
+        { title: 'Acciones', key: 'acciones', fixed: 'right',
             render: (text, record) => (
                 <span>
                     <ButtonBS variant="warning" className="mb-1" onClick={() => showModal(record)}>
@@ -135,15 +140,17 @@ const ListaRegistroOperaciones = () => {
             )
          }
     ];
+    const horariosJson = horarios;
 
     if (loading) return <div>Cargando...</div>;
     if (error) return <div>Error: {error.message}</div>;
     return (
-        <>
+        <div className='tablaResponsiva'>
             {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
             {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
+            {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
             <Table dataSource={listaRegistro} columns={columns} rowKey="reg_id" />
-            <Modal show={visible} onHide={handleCancel}>
+            <Modal show={visible} onHide={handleCancel} scroll={{x: 150, y: 300}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar Registro</Modal.Title>
                 </Modal.Header>
@@ -175,7 +182,15 @@ const ListaRegistroOperaciones = () => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Horario del registro</Form.Label>
-                            <Form.Control ref={horarioRef} defaultValue={registroSeleccionado.horario} type="number"/>
+                            <Form.Select ref={horarioRef}>
+                                {horariosJson.map((dato, index) => (
+                                    dato.horario === registroSeleccionado.horario ? (
+                                        <option value={dato.horario} selected>{dato.horaHorario}</option>
+                                    ) : (
+                                        <option value={dato.horario}>{dato.horaHorario}</option>
+                                    )
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Meta de eficiencia</Form.Label>
@@ -196,7 +211,7 @@ const ListaRegistroOperaciones = () => {
                     </ButtonBS>
                 </Modal.Footer>
             </Modal>
-        </>
+        </div>
     )
 };
 export default ListaRegistroOperaciones;

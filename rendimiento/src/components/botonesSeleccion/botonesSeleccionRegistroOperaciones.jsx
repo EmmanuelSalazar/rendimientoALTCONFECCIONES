@@ -15,7 +15,7 @@ const BotonesSelModRegOp = () => {
         setBotonSeleccionado(index);
         try {
             await actualizarLista(modulo, true);
-            await actualizarListas(modulo);
+            await actualizarListas(modulo, true);
             await setListaRegistro(modulo)
         } catch (error) {
             console.error("Ha ocurrido un error: ", error)

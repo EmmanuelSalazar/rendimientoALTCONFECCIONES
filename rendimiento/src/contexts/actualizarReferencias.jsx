@@ -3,16 +3,19 @@ import useFetchData from '../services/api/mostrarReferencias';
 export const ListaContext = createContext();
 
 export const ListaProvider = ({ children }) => {
+  // RECIBIR DATOS DE LA API
   const { data, loading, error, fetchData } = useFetchData();
+  //
   const [listas, setLista] = useState([]);
-
-  const actualizarListas = async (modulo) => {
+  // HOOK PARA REALIZAR Y ALMACENAR SOLICITUD
+  const actualizarListas = async (modulo, redux) => {
     let moduloConsultado = modulo ?? null;
+    let reduxConsultado = redux ?? 0;
     try {
-      const nuevaLista = await fetchData(moduloConsultado);
+      const nuevaLista = await fetchData(moduloConsultado, reduxConsultado);
       setLista([...nuevaLista]);
-      //Wconsole.log('Nueva lista obtenida:', nuevaLista);
     } catch (error) {
+      throw error;
       console.error('Ha ocurrido un error al actualizar sus datos', error);
     }
   };

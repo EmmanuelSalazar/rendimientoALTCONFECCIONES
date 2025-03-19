@@ -1,6 +1,10 @@
 #root {
     width: 100%;
 }
+.tablaResponsiva {
+    overflow-x: auto;
+    width: 100%;
+}
 .formulario {
     width: 100%;
 }
@@ -13,6 +17,10 @@
     width: 100%;
     text-align: CENTER;
 }
+.beneficios {
+    font-size: 45px;
+}
+
 .porcentajeEficienciaTitulo {
     font-size: 60px;
 }
@@ -27,5 +35,6 @@
     gap: 0.5rem;
 }
 .notificacion > div {
-    min-width: 49%;
+    min-width: 50%;
+    font-size: 25px;
 }

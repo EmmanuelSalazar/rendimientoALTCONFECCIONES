@@ -4,15 +4,17 @@ import data from '../utils/json/cortePorQuincena.json'
 import { ListaContext } from "../contexts/informacionGrafico";
 
 const PorcentajeDeEficienciaPorCorte = () => {
+    // CONTEXTOS
     const { lista } = React.useContext(ListaContext);
+    //
     const [porcentaje, setPorcentaje] = useState("--");
     var corteQuincena = "";
-    
+    // ACTUALIZAR AL RECIBIR NUEVOS DATOS
     useEffect(() => {
             establecerEficiencia();
         }, [lista]);
+    // ESTABLECER EFICIENCIA DEL MODULO
     const operarioCalculador = lista.find(operario => operario.calculador_final === 1);
-    
     const establecerEficiencia = () => {
         if (operarioCalculador) {
             const eficienciaCalculada = operarioCalculador.eficiencia_quincenal;
@@ -20,6 +22,7 @@ const PorcentajeDeEficienciaPorCorte = () => {
 
         }
     }
+    //DAR COLOR AL RECUADRO SEGUN EFICIENCIA
     const obtenerColorEficiencia = () => {
         if (porcentaje > 70) {
             return 'bg-success text-light'
@@ -31,8 +34,6 @@ const PorcentajeDeEficienciaPorCorte = () => {
                 return 'bg-danger  text-light'
             }
         }
-
-
         /* CALCULAR CORTE */
         const fechaActual = new Date();
         const mesActual = fechaActual.getMonth()+1;

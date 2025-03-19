@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { ListaContext } from "../contexts/informacionGrafico";
 const items = [
         {
-            label: <NavLink to="/modulo" className="noDecorativos">Modulos</NavLink>,
+            label: <NavLink to="/modulo" className="noDecorativos">Tablero</NavLink>,
             key: 'modulos',
             icon: <CaretDownOutlined />,
             children: [

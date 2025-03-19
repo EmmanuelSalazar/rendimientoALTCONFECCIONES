@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Input, Form, Alert } from 'antd'
 import { Button } from "react-bootstrap";
-import ListaContadoresFinales from "../listaContadoresFinales";
+import ListaContadoresFinales from "../listas/listaContadoresFinales";
 import ActualizarOperario from "../../services/api/update/actualizarOperario";
 const PanelAdministrativo = () => {
     const [mensajeDeExito, setMensajeDeExito] = React.useState("");

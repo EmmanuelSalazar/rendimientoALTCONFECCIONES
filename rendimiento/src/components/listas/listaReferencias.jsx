@@ -1,23 +1,27 @@
 import React, { useContext, useEffect, useState, useRef, act } from 'react';
-import { ListaContext } from '../contexts/actualizarReferencias';
-import EliminarReferencia from '../services/api/eliminarReferencia';
-import ActualizarReferencia from '../services/api/update/actualizarReferencia';
+import { ListaContext } from '../../contexts/actualizarReferencias';
+import EliminarReferencia from '../../services/api/eliminarReferencia';
+import ActualizarReferencia from '../../services/api/update/actualizarReferencia';
 import { Table } from 'antd';
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
 const ListaReferencias = () => {
+    // CONTEXTOS
     const { actualizarReferencia } = ActualizarReferencia();
     const { listas, loading, error, actualizarListas } = useContext(ListaContext);
     const { fetchData } = EliminarReferencia();
-    const [mensajeDeExito, setMensajeDeExito] = useState("");
-    const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
-    const [mensajeDeError, setMensajeDeError] = useState("");
+    //
     const [referenciaSeleccionada, setReferenciaSeleccionada] = useState(null);
     const [visible, setVisible] = useState(false);
+    // ALMACENAR FORMULARIOS
     const referenciaRef = useRef();
     const moduloRef = useRef();
     const tiempoDeProduccionRef = useRef();
-    const estadoRef = useRef();  
+    const estadoRef = useRef();
+    // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
+    const [mensajeDeExito, setMensajeDeExito] = useState("");
+    const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
+    const [mensajeDeError, setMensajeDeError] = useState("");
     useEffect(() => {
             if (mensajeDeExito || mensajeDeAlerta || mensajeDeError) {
                 const timer = setTimeout(() => {
@@ -28,12 +32,12 @@ const ListaReferencias = () => {
             return () => clearTimeout(timer);
             }
         }, [mensajeDeExito, mensajeDeAlerta, mensajeDeError]);
-
+        // ABRIR MODAL Y CARGAR DATOS
         const showModal = (referencia) => {
             setReferenciaSeleccionada(referencia)
             setVisible(true)
         }
-    
+        // PROCESAR Y ALMACENAR INFORMACIÓN
         const handleOk = async () => {
             const values = {
                 "referencia": referenciaRef.current.value,
@@ -43,55 +47,55 @@ const ListaReferencias = () => {
             }
             try {
                 await actualizarReferencia(values);
-                await actualizarListas();
+                await actualizarListas(window.ModuloSeleccionado, 0);
                 setMensajeDeExito("La referencia ha sido actualizada con éxito");
             } catch (error) {
-                console.log("Ha ocurrindo un error: ", error);
+                setMensajeDeError("Ha ocurrido un error, si este persiste, contacte al administrador: ", error);
+                console.log("Ha ocurrido un error: ", error);
             }
-            console.log(values)
             setReferenciaSeleccionada(null)
             setVisible(false)
         }
-    
+        // CERRAR MODAL
         const handleCancel = () => {
             setReferenciaSeleccionada(null)
             setVisible(false)
         }
-
-    const handleDelete = async (id) => {
+        // ELIMINAR INFORMACIÓN
+        const handleDelete = async (id) => {
         try {
             await fetchData(id);
-            await actualizarListas();
+            await actualizarListas(window.ModuloSeleccionado);
             setMensajeDeAlerta("La referencia ha sido eliminada con éxito");
         } catch (error) {
             setMensajeDeError("Ha ocurrido un error: ", error);
         }
     }
+    // COLUMNAS DE LA TABLA
     const columns = [
         { title: 'Referencia', dataIndex: 'referencia', key: 'referencia'},
         { title: 'Tiempo de produccion', dataIndex: 'tiempoDeProduccion', key: 'tiempoDeProduccion'},
         { title: 'Modulo', dataIndex: 'modulo', key: 'modulo'},
         { title: 'Estado', dataIndex: 'estado', key: 'estado'},
-        {
+        {   fixed: 'right',
             title: 'Acciones',
             key: 'acciones',
             render: (text, record) => (
                 <span>
-                    <Button variant="warning" className="mx-1" onClick={() => showModal(record)}>
+                    <Button variant="warning"  className="mx-1 mb-1" onClick={() => showModal(record)}>
                      Editar
                     </Button>
-                    <Button variant="danger" onClick={() => handleDelete(record.ref_id)}>Eliminar</Button>
+                    <Button variant="danger" disabled onClick={() => handleDelete(record.ref_id)}>Eliminar</Button>
                 </span>
             ),
         },
 
     ];
-    const ref_id = listas.map(id => id.ref_id) 
     if (loading) return <div>Cargando...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
     return (
-        <div>
+        <div className='tablaResponsiva'>
             {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
             {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
             {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}

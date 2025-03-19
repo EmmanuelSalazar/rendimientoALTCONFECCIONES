@@ -3,14 +3,14 @@ import useFetchData from '../services/api/mostrarOperarios';
 export const ListaContext = createContext();
 
 export const ListaProvider = ({ children }) => {
-
+  // RECIBIR INFORMACIÓN DE LA API
   const { data, loading, error, fetchData } = useFetchData();
+  //
   const [lista, setLista] = useState([]);
-
+  // HOOK PARA REALIZAR Y ALMACENAR SOLICITUD
   const actualizarLista = async (modulo, redux) => {
-    const moduloConsultado = modulo ?? null;
+    let moduloConsultado = modulo ?? null;
     let reduxConsultado = redux ?? false;
-
     try {
       const nuevaLista = await fetchData(moduloConsultado, reduxConsultado);
       setLista([...nuevaLista]);

@@ -3,13 +3,16 @@ import { Stack } from 'react-bootstrap';
 import FechaActual from './fechaActual'
 import { ListaContext } from "../contexts/informacionGrafico";
 const PorcentajeDeEficienciaDiaria = () => {
+    // CONTEXTOS
     const { lista } = React.useContext(ListaContext);
+    // COMPONENTE DE FECHAS
     const { fechaFormateada } = FechaActual();
+    //
     const [porcentaje, setPorcentaje] = useState("--");
+    // ACTUALIZAR AL RECIBIR NUEVOS DATOS
     useEffect(() => {
         establecerEficiencia();
     }, [lista]);
-
     // Establecer el operario que calcula la eficiencia del modulo
     const operarioCalculador = lista.find(operario => operario.calculador_final === 1);
     const establecerEficiencia = () => {
@@ -19,6 +22,7 @@ const PorcentajeDeEficienciaDiaria = () => {
 
         }
     }
+    // DAR COLOR AL RECUADRO SEGUN EFICIENCIA
     const obtenerColorEficiencia = () => {
         if (porcentaje > 70) {
             return 'bg-success text-light'

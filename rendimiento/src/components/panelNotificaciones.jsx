@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Col, Row } from 'react-bootstrap';
+import { Stack, Col } from 'react-bootstrap';
 import { ListaContext } from '../contexts/informacionGrafico';
 const PanelNotificaciones = () => {
     const { lista } = React.useContext(ListaContext);

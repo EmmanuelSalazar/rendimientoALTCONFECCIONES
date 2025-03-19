@@ -1,32 +1,14 @@
-import {useState, useEffect, useCallback} from "react";
 import axios from 'axios';
-const useFetchData = () => {
+
+// FUNCION PARA OBTENER DATOS
+const fetchContadoresFinales = async () => {
     const apiURL = import.meta.env.VITE_API_URL;
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null);
-    const fetchData = useCallback(async () => {
-        setLoading(true)
-            try {
-                const response = await axios.get(`${apiURL}/READ/mostrarContadoresFinales.php`)
-                if (response.data.ok) {
-                    setData(response.data.respuesta)
-                    return response.data.respuesta
-                } else{
-                    console.error('Ha ocurrido un error: ', response.data)
-                    return []
-                }
-            }  catch (error) {
-                setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
-                console.error("Error al obtener datos:", error)
-                return [];
-            } finally {
-                setLoading(false)
-            }
-        },[]);
-        useEffect(() => {
-            fetchData();
-        }, [fetchData]);
-        return {data, error, fetchData}
-}
-export default useFetchData;
+    const query = await axios.get(`${apiURL}/READ/mostrarContadoresFinales.php`);
+    if (query.data.ok) {
+        return query.data.respuesta;
+    } else {
+        throw new Error(query.data.respuesta || 'Ha ocurrido un error al realizar la solicitud');
+    }
+};
+
+export default fetchContadoresFinales;

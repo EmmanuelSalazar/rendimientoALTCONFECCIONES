@@ -1,50 +1,53 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Button, Form, Alert } from 'react-bootstrap'
-import AlmacenarDatos from '../services/api/almacenarReferencia'
-import { ListaContext } from '../contexts/actualizarReferencias';
+import { Button, Form, Alert, Col } from 'react-bootstrap'
+import AlmacenarDatos from '../../services/api/almacenarReferencia'
+import { ListaContext } from '../../contexts/actualizarReferencias';
 const AgregarReferencia = () => {
+    // CONTEXTOS
     const { actualizarListas } = React.useContext(ListaContext);
-    const [mensajeExito, setMensajeExito] = useState("");
+    // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
+    const [mensajeDeExito, setMensajeDeExito] = useState("");
+    const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
+    const [mensajeDeError, setMensajeDeError] = useState("");
     useEffect(() => {
-        if (mensajeExito) {
-          const timer = setTimeout(() => {
-            setMensajeExito("");
-          }, 2000);
-          return () => clearTimeout(timer);
+        if (mensajeDeExito || mensajeDeAlerta || mensajeDeError) {
+            const timer = setTimeout(() => {
+                setMensajeDeExito("");
+                setMensajeDeError("");
+                setMensajeDeAlerta("");
+            }, 3000);
+            return () => clearTimeout(timer);
         }
-      }, [mensajeExito]);
-
+    }, [mensajeDeExito, mensajeDeAlerta, mensajeDeError]);
+    // ALMACENAR FORMULARIOS
     const codigoReferenciaRef = useRef();
     const tiempoTareaRef = useRef();
     const moduloRef = useRef();
     const formRef = useRef(null);
-
+    // PROCESAR Y ENVIAR INFORMACIÓN INFORMACIÓN
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const codigoReferencia = codigoReferenciaRef.current.value;
-        const tiempoTarea = tiempoTareaRef.current.value;
-        const modulo = moduloRef.current.value;
-
         const values = {
-            'codigoReferencia': codigoReferencia,
-            'tiempoTarea': tiempoTarea,
-            'modulo': modulo,
+            'codigoReferencia': codigoReferenciaRef.current.value,
+            'tiempoTarea': tiempoTareaRef.current.value,
+            'modulo': moduloRef.current.value,
         }
         try {
             await AlmacenarDatos(values)
             await actualizarListas();
-            setMensajeExito("La Referencia se ha almacenado correctamente");
+            setMensajeDeExito("La Referencia se ha almacenado correctamente");
             formRef.current.reset();
         } catch (error){
-            setMensajeExito("Ha ocurrido un error, si este persiste, contacte con el administrador");
+            setMensajeDeError("Ha ocurrido un error, si este persiste, contacte con el administrador: ", error);
             console.error("Ha ocurrido un error: ", error)
-
         }
-        
     }
     return (
-            <Form className="m-5" style={{width: '100%'}} onSubmit={handleSubmit} ref={formRef}>
-                                    {mensajeExito && <Alert variant="success">{mensajeExito}</Alert>}
+        <Col className="formularioConBotones">
+            <Form className="mx-5" style={{width: '100%'}} onSubmit={handleSubmit} ref={formRef}>
+                {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
+                {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
+                {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
                 <Form.Group className="m-5">
                     <Form.Label>Ingresa el codigo de referencia</Form.Label>
                     <Form.Control type="text" placeholder="Ej: 12345" required ref={codigoReferenciaRef}/>
@@ -61,8 +64,9 @@ const AgregarReferencia = () => {
                 <Form.Group>
                     <Button className="mx-5" variant="primary" type="submit">Registrar referencia</Button>
                 </Form.Group>
-
             </Form>
+        </Col>
+            
     )
 }
 export default AgregarReferencia

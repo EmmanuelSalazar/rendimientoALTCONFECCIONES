@@ -18,6 +18,7 @@ const EliminarReferencia = () => {
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
                 console.error("Error al eliminar:", error)
+                throw error;
                 return [];
             } finally {
                 setLoading(false)

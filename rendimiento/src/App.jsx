@@ -14,15 +14,15 @@ function App() {
     return (
       <Router>
         <ListaProvider>
-        <MenuPrincipal />
-        <Routes>
-          <Route path="/" element={<Modulo />} />
-          <Route path='/modulo' element={<Modulo />}/>
-          <Route path='/referencias' element={<Referencias />}/>
-          <Route path='/operarios' element={<Operarios />}/>
-          <Route path='/registro_operaciones' element={<RegistroOperaciones />}/>
-          <Route path='/tablaRegistros' element={<TablaRegistro />}/>
-        </Routes>
+          <MenuPrincipal />
+          <Routes>
+            <Route path="/" element={<Modulo />} />
+            <Route path='/modulo' element={<Modulo />}/>
+            <Route path='/referencias' element={<Referencias />}/>
+            <Route path='/operarios' element={<Operarios />}/>
+            <Route path='/registro_operaciones' element={<RegistroOperaciones />}/>
+            <Route path='/tablaRegistros' element={<TablaRegistro />}/>
+          </Routes>
         </ListaProvider>
       </Router>
     )

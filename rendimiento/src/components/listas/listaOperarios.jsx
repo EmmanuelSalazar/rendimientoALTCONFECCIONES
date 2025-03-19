@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { ListaContext } from '../contexts/actualizarOperarios';
-import EliminarOperario from '../services/api/eliminarOperario';
-import ActualizarOperario from '../services/api/update/actualizarOperario';
+import { ListaContext } from '../../contexts/actualizarOperarios';
+import EliminarOperario from '../../services/api/eliminarOperario';
+import ActualizarOperario from '../../services/api/update/actualizarOperario';
 import { Table } from 'antd';
 import { Alert, Button, Modal, Form } from 'react-bootstrap';
 
@@ -98,7 +98,6 @@ const ListaOperarios = () => {
             {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
             {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
             <Table dataSource={lista} columns={columns} rowKey="op_id" />
-
             {/* Modal */}
             <Modal show={mostrar} onHide={handleClose}>
                 <Modal.Header closeButton>

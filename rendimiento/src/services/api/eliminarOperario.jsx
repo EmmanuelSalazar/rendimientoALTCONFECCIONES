@@ -17,6 +17,7 @@ const EliminarOperario = () => {
                 return response.data.respuesta
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
+                throw error;
                 console.error("Error al eliminar:", error)
                 return [];
             } finally {

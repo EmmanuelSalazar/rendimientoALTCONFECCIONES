@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { ListaContext } from '../contexts/informacionGrafico';
+import { ListaContext } from '../../contexts/informacionGrafico';
 import { Alert, Spinner } from 'react-bootstrap';
 
 const HorizontalBarChart = () => {
@@ -44,7 +44,7 @@ const HorizontalBarChart = () => {
         y: {
           ticks: {
             font: {
-              size: 28,
+              size: 34,
               weight: 'bold'
             },
             color: 'white',
@@ -86,8 +86,8 @@ const HorizontalBarChart = () => {
 };
 
   const styles = {
-    width: '1170px',
-    height: '720px',
+    width: '1270px',
+    height: '840px',
     display: 'flex',
     justifyContent: 'center',
   };

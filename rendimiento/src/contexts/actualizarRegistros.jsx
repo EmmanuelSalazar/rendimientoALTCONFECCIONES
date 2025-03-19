@@ -4,19 +4,22 @@ import FechaActual from '../components/fechaActual';
 export const ListaContext = createContext();
 
 export const ListaProvider = ({ children }) => {
+  // COMPONENTE DE FECHA
   const { fechaActualDia } = FechaActual();
+  // RECIBIR DATOS DE LA API
   const { data, loading, error, fetchData } = useFetchData();
+  //
   const [lista, setLista] = useState([]);
-   
+  // HOOK PARA REALIZAR Y ALMACENAR IFORMACION
   const listaActualizada = async (fecha, modulo) => {
     window.moduloConsultado = modulo;
     const fechaConsultada = fecha ?? fechaActualDia;
     try {
       const nuevaLista = await fetchData(fechaConsultada, modulo);
       setLista([...nuevaLista]);
-      //console.log('Nueva lista obtenida:', nuevaLista);
     } catch (error) {
       console.error('Ha ocurrido un error al actualizar sus datos', error);
+      throw error;
     }
   };
 

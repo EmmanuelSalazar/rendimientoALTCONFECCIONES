@@ -1,10 +1,11 @@
 import React from "react";
 import { Modal, Button, DatePicker, Space } from 'antd'
-import ListaRegistroOperaciones from "./listaRegistroOperaciones";
-import {ListaContext } from "../contexts/actualizarRegistroOperaciones";
+import ListaRegistroOperaciones from "../listas/listaRegistroOperaciones";
+import {ListaContext } from "../../contexts/actualizarRegistroOperaciones";
+import ExportToExcel from "../exportarExcel";
 const { RangePicker } = DatePicker;
 const FechasDuales = () => {
-    const { setListaRegistro } = React.useContext(ListaContext)
+    const { listaRegistro, setListaRegistro } = React.useContext(ListaContext)
     const [visible, setVisible] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
@@ -60,6 +61,7 @@ const FechasDuales = () => {
         try {
             await setListaRegistro(window.moduloConsultado, dateStrings[0], dateStrings[1], window.horaInicio, window.horaFin)
         } catch (error) {
+            setMensajeDeError("Ha ocurrido un error: ", error);
             console.error("Ha ocurrido un error: ",error)
         }  
     }
@@ -72,6 +74,7 @@ const FechasDuales = () => {
                         <RangePicker onChange={onPanelChange}/>
                         <strong>Seleccionar hora</strong>
                         <RangePicker onChange={onChangeHours} picker="time" format="HH" disabledTime={disabledTime}/>
+                        <ExportToExcel datos={listaRegistro}/>
                     </Space>
                     {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
                     {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
