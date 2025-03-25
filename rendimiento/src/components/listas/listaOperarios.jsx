@@ -69,7 +69,6 @@ const ListaOperarios = () => {
             console.error("Ha ocurrido un error: ", error);
         }
     }
-    console.log(lista);
     // COLUMNAS DE LA TABLA
     const columns = [
         { title: 'ID', dataIndex: 'op_id', key: 'op_id' },
@@ -82,7 +81,7 @@ const ListaOperarios = () => {
             key: 'acciones',
             render: (text, record) => (
                 <span>
-                    <Button variant="warning" className="mx-1" onClick={() => handleShow(record)}>
+                    <Button variant="warning" className="mx-1 mb-1" onClick={() => handleShow(record)}>
                         Editar
                     </Button>
                     <Button variant="danger" onClick={() => handleDelete(record.op_id)}>
@@ -96,7 +95,6 @@ const ListaOperarios = () => {
 
     if (loading) return <Spin className='mt-5' tip="Cargando..."><div></div></Spin>;
     if (error) return <Alert variant='danger'>Error: {error.message}</Alert>;
-    console.log(lista)
     return (
         <div>
             {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
