@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { ListaContext } from '../../contexts/actualizarRegistroOperaciones';
-import { Table, Input, Button, Space } from 'antd';
+import { Table, Input, Button, Space, Spin } from 'antd';
 import { Button as ButtonBS, Modal, Form, Alert } from 'react-bootstrap';
 import { SearchOutlined } from '@ant-design/icons';
 import { ListaContext as ListaContexto} from "../../contexts/actualizarReferencias";
@@ -84,7 +84,7 @@ const ListaRegistroOperaciones = () => {
     };
     // Configuración de las columnas con filtro en "Operador"
     const columns = [
-        { title: 'Fecha', dataIndex: 'fecha', key: 'fecha' },
+        { title: 'Fecha', dataIndex: 'fecha', key: 'fecha', width: 100 },
         {
             title: 'Operador',
             dataIndex: 'nombre_operario',
@@ -124,11 +124,13 @@ const ListaRegistroOperaciones = () => {
                     setTimeout(() => document.querySelector('.ant-table-filter-dropdown input').select(), 100);
                 }
             },
+            width: 110
         },
-        { title: 'Referencia', dataIndex: 'referencia', key: 'referencia' },
-        { title: 'Unidades producidas', dataIndex: 'unidadesProducidas', key: 'unidadesProducidas' },
-        { title: 'Meta de eficiencia', dataIndex: 'metaAjustada', key: 'metaAjustada' },
-        { title: 'Eficiencia', dataIndex: 'eficiencia', key: 'eficiencia' },
+        { title: 'Referencia', dataIndex: 'referencia', key: 'referencia', width: 100 },
+        { title: 'Unidades', dataIndex: 'unidadesProducidas', key: 'unidadesProducidas', width: 92 },
+        { title: 'Meta', dataIndex: 'metaAjustada', key: 'metaAjustada', width: 65 },
+        { title: 'Eficiencia', dataIndex: 'eficiencia', key: 'eficiencia', width: 93  },
+        { title: 'Comentarios', dataIndex: 'comentarios', key: 'comentarios', width: 113  },
         { title: 'Acciones', key: 'acciones', fixed: 'right',
             render: (text, record) => (
                 <span>
@@ -137,20 +139,22 @@ const ListaRegistroOperaciones = () => {
                     </ButtonBS>
                     <ButtonBS variant="danger" onClick={() => handleDelete(record.regProd_id)}>Eliminar</ButtonBS>
                 </span>
-            )
+            ),
+            width: 100 
          }
     ];
     const horariosJson = horarios;
-
-    if (loading) return <div>Cargando...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (loading) return (
+        <Spin tip="Cargando..."><div></div></Spin>
+    );
+    if (error) return <Alert variant="danger">Ha ocurrido un error</Alert>
     return (
         <div className='tablaResponsiva'>
             {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
             {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
             {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
-            <Table dataSource={listaRegistro} columns={columns} rowKey="reg_id" />
-            <Modal show={visible} onHide={handleCancel} scroll={{x: 150, y: 300}}>
+            <Table dataSource={listaRegistro} columns={columns} rowKey="reg_id" scroll={{y: 520}} pagination={false}/>
+            <Modal show={visible} onHide={handleCancel}>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar Registro</Modal.Title>
                 </Modal.Header>

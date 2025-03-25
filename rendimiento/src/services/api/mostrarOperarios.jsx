@@ -10,7 +10,6 @@ const useFetchData = () => {
         let moduloFinal = modulo ?? null;
         let reduxFinal = redux ?? false;
             try {
-                //console.log(`DEBUG ULTIMO NIVEL: ${apiURL}/mostrarOperarios.php?modulo=${moduloFinal}&redux=${reduxFinal}`);
                 const response = await axios.get(`${apiURL}/mostrarOperarios.php?modulo=${moduloFinal}&redux=${reduxFinal}`)
                 if (response.data.ok) {
                     setData(response.data.respuesta)
@@ -18,12 +17,12 @@ const useFetchData = () => {
                 } else {
                     console.error('Ha ocurrido un error, reinicie, si este persiste, contacte al administrador')
                     return []
-                }
+/*                     throw new Error(response.data.respuesta)
+ */                }
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
                 console.error("Error al obtener datos:", error)
                 throw error;
-                return [];
             } finally {
                 setLoading(false)
             }
@@ -31,6 +30,6 @@ const useFetchData = () => {
         useEffect(() => {
             fetchData();
         }, [fetchData]);
-        return {data, error, fetchData}
+        return {data, error, fetchData, loading}
 }
 export default useFetchData;

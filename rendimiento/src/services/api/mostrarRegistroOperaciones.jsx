@@ -16,21 +16,17 @@ const useFetchData = () => {
         let horaFinSeleccionada = hora_fin ?? '23:59'
         setLoading(true)
             try {
-                //console.log(`DEBUG ULTIMO NIVEL: ${apiURL}/mostrarRegistroOperaciones.php?modulo=${moduloSeleccionado}&fecha_inicio=${fechaInicioSeleccionada}&fecha_fin=${fechaFinSeleccionada}&hora_inicio=${horaInicioSeleccionada}&hora_fin=${horaFinSeleccionada}`)
                 const response = await axios.get(`${apiURL}/mostrarRegistroOperaciones.php?modulo=${moduloSeleccionado}&fecha_inicio=${fechaInicioSeleccionada}&fecha_fin=${fechaFinSeleccionada}&hora_inicio=${horaInicioSeleccionada}&hora_fin=${horaFinSeleccionada}`)
                 if (response.data.ok) {
                     setData(response.data.respuesta)
                     return response.data.respuesta
                 } else {
-                    console.error('Ha ocurrido un error, reinicie, si este persiste, contacte al administrador')
-                    return [] 
+                    return []
                 }
-                
             }  catch (error) {
                 setError(error instanceof Error ? error : new Error("Ha ocurrido un error desconocido"))
                 console.error("Error al obtener datos:", error)
                 throw error;
-                return [];
             } finally {
                 setLoading(false)
             }
@@ -38,6 +34,6 @@ const useFetchData = () => {
         useEffect(() => {
             fetchData();
         }, [fetchData]);
-        return {data, error, fetchData}
+        return {data, error, fetchData, loading}
 }
 export default useFetchData;

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Button, Form, Alert, Col, Stack } from "react-bootstrap";
-import { Switch, Checkbox } from "antd";
+import { Switch, Checkbox, Spin } from "antd";
 import AlmacenarDatos from "../../services/api/almacenarRegistroOperaciones";
 import { ListaContext as ContextoEnLista } from "../../contexts/actualizarRegistroOperaciones";
 import { ListaContext, ListaProvider } from "../../contexts/actualizarOperarios";
@@ -10,7 +10,7 @@ const RegistrarOperaciones = () => {
     // CONTEXTOS
     const { lista, actualizarLista } = React.useContext(ListaContext);
     const { listas } = React.useContext(ContextoEnLista2);
-    const { setListaRegistro } = React.useContext(ContextoEnLista);
+    const { setListaRegistro, loading, error } = React.useContext(ContextoEnLista);
     // ACTIVAR/DESACTIVARR REGISTROS MULTIPLES/COMENTARIOS ADICIONALES
     const [registroMultiple, setRegistroMultiple] = useState(true);
     const [comentarios, setComentarios] = useState(false);
@@ -68,11 +68,12 @@ const RegistrarOperaciones = () => {
             setMensajeDeExito("El registro se ha guardado correctamente");
             formRef.current.reset();
         } catch (error) {
-            setMensajeDeError("Ha ocurrido un error, por favor intente de nuevo más tarde");
+            setMensajeDeError("Ha ocurrido un error, por favor intente de nuevo más tarde: ", error);
             console.error("Ha ocurrido un error: ", error);
         }
     };
-
+     if (loading) return <Spin className='mt-5' tip="Cargando..."><div></div></Spin>;
+     if (error) return <Alert variant='danger'>Error: {error.message}</Alert>;
     return (
         <Col className="formularioConBotones">
             <ListaProvider>

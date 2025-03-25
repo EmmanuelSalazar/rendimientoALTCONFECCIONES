@@ -19,6 +19,7 @@ const BotonesSelModRegOp = () => {
             await setListaRegistro(modulo)
         } catch (error) {
             console.error("Ha ocurrido un error: ", error)
+            throw error;
         }
     }
     return (

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef, act } from 'react';
 import { ListaContext } from '../../contexts/actualizarReferencias';
 import EliminarReferencia from '../../services/api/eliminarReferencia';
 import ActualizarReferencia from '../../services/api/update/actualizarReferencia';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
 const ListaReferencias = () => {
@@ -91,8 +91,8 @@ const ListaReferencias = () => {
         },
 
     ];
-    if (loading) return <div>Cargando...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (loading) return <Spin className='mt-5' tip="Cargando..."><div></div></Spin>;
+    if (error) return <Alert variant='danger'>Error: {error.message}</Alert>;
 
     return (
         <div className='tablaResponsiva'>
@@ -100,7 +100,7 @@ const ListaReferencias = () => {
             {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
             {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
 
-            <Table dataSource={listas} columns={columns} rowKey="ref_id" />
+            <Table dataSource={listas} columns={columns} rowKey="ref_id" scroll={{y: 500}} pagination={false} />
             <Modal show={visible} onHide={handleCancel}>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar referencia</Modal.Title>

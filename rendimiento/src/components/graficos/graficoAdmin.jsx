@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { Spin } from 'antd'
+import { Alert } from 'react-bootstrap'
 import { Bar } from "react-chartjs-2";
 import 'chart.js/auto';
 import { ListaContext } from '../../contexts/informacionGrafico';
@@ -72,28 +74,8 @@ const GraficaAdministrativa = () => {
         justifyContent: 'center',
       };
     
-      if (loading) {
-        return (
-          <div style={styles}>
-            <div className="text-center">
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </Spinner>
-              <p className="mt-2">Cargando datos...</p>
-            </div>
-          </div>
-        );
-      }
-    
-      if (error) {
-        return (
-          <div style={styles}>
-            <Alert variant="danger">
-              Error al cargar los datos: {error.message}
-            </Alert>
-          </div>
-        );
-      }
+    if (loading) return <Spin className='mt-5' tip="Cargando..."><div></div></Spin>;
+    if (error) return <Alert variant='danger'>Error: {error.message}</Alert>;
     
       return (
         <div style={styles}>

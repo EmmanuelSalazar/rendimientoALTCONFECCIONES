@@ -13,21 +13,21 @@ import PanelAdministrativo from '../components/modal/seleccionarOperarioContador
 import TiempoDeMontaje from "../components/modal/ingresarTiempoDeMontaje";
 function TablaRegistro() {
     return (
-        <Container className="mt-2">
+        <Container>
             <ProveedorDeLista3>
                 <ListaProvider>
                     <ProveedorDeLista>
-                        <Row className="my-2 ">
+                        <Row className="my-2">
                             <BotonesSeleccionModulos />
                         </Row>
-                        <Row className="d-flex justify-content-between" style={{minHeight: '75vh', maxHeight: '75vh'}}>
-                            <Col lg={3} xs={12} md={6} className="mx-1">
+                        <Row className="d-flex justify-content-between">
+                            <Col lg={3} xs={12} md={6} className="mb-3">
                                 <CalendarioSeleccion />
                                 <ProveedorDeLista2>
                                     <FechasDuales />
                                 </ProveedorDeLista2>
                             </Col>
-                            <Col xs={8}>
+                            <Col lg={8} xs={12}>
                                 <TablaRegistros />
                             </Col>
                         </Row>
@@ -38,7 +38,7 @@ function TablaRegistro() {
                         </Row>
                     </ProveedorDeLista>
                 </ListaProvider>
-                <Row className="mb-2">
+                <Row className="mb-2 g-2">
                     <Col lg={3}>
                         <PanelAdministrativo />
                     </Col>

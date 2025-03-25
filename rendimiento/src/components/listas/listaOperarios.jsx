@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { ListaContext } from '../../contexts/actualizarOperarios';
 import EliminarOperario from '../../services/api/eliminarOperario';
 import ActualizarOperario from '../../services/api/update/actualizarOperario';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
 import { Alert, Button, Modal, Form } from 'react-bootstrap';
 
 const ListaOperarios = () => {
@@ -15,6 +15,7 @@ const ListaOperarios = () => {
     const nombreOperarioRef = useRef();
     const moduloRef = useRef();
     const actividadRef = useRef();
+    const revisorRef = useRef();
     // MANEJO DE ALERTAS EXITO/ALERTA/ERROR
     const [mensajeDeExito, setMensajeDeExito] = useState("");
     const [mensajeDeAlerta, setMensajeDeAlerta] = useState("");
@@ -55,7 +56,8 @@ const ListaOperarios = () => {
         const values = {
             "nombreOperario": nombreOperarioRef.current.value,
             "modulo": moduloRef.current.value,
-            "actividad": actividadRef.current.value
+            "actividad": actividadRef.current.value,
+            "revisor" : revisorRef.current.value
         };
         try {
             await actualizarOperario(operarioSeleccionado.op_id, false, values);
@@ -67,12 +69,14 @@ const ListaOperarios = () => {
             console.error("Ha ocurrido un error: ", error);
         }
     }
+    console.log(lista);
     // COLUMNAS DE LA TABLA
     const columns = [
         { title: 'ID', dataIndex: 'op_id', key: 'op_id' },
         { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
         { title: 'Módulo', dataIndex: 'modulo', key: 'modulo' },
         { title: 'Estado', dataIndex: 'estado', key: 'estado' },
+        { title: 'Revisor', dataIndex: 'revisor', key: 'revisor' },
         {
             title: 'Acciones',
             key: 'acciones',
@@ -86,18 +90,19 @@ const ListaOperarios = () => {
                     </Button>
                 </span>
             ),
+            fixed: 'right'
         },
     ];
 
-    if (loading) return <div>Cargando...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-
+    if (loading) return <Spin className='mt-5' tip="Cargando..."><div></div></Spin>;
+    if (error) return <Alert variant='danger'>Error: {error.message}</Alert>;
+    console.log(lista)
     return (
         <div>
             {mensajeDeExito && <Alert variant="success">{mensajeDeExito}</Alert>}
             {mensajeDeAlerta && <Alert variant="warning">{mensajeDeAlerta}</Alert>}
             {mensajeDeError && <Alert variant="danger">{mensajeDeError}</Alert>}
-            <Table dataSource={lista} columns={columns} rowKey="op_id" />
+            <Table dataSource={lista} columns={columns} rowKey="op_id" scroll={{y: 500}} pagination={false} />
             {/* Modal */}
             <Modal show={mostrar} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -119,6 +124,24 @@ const ListaOperarios = () => {
                                 <Form.Select ref={actividadRef}>
                                     <option value="1">Activo</option>
                                     <option value="0">Inactivo</option>
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Revisor</Form.Label>
+                                <Form.Select ref={revisorRef}>
+                                    {
+                                    operarioSeleccionado.revisador == 1 ? (
+                                        <>
+                                            <option value="1" selected>Revisador/a</option>
+                                            <option value="0">Operario/a</option>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option value="0" selected>Operario/a</option>
+                                            <option value="1">Revisador/a</option>
+                                        </>
+                                    )
+                                    }
                                 </Form.Select>
                             </Form.Group>
                         </Form>

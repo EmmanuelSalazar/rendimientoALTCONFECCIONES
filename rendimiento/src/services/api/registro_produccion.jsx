@@ -5,9 +5,10 @@ const useFetchData = () => {
     const apiURL = import.meta.env.VITE_API_URL;
 
     const [datos, setData] = useState([]);
-    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
     const fetchData = useCallback(async (fecha, modulo, operarios) => {
+      setLoading(true);
         try {
           const response = await axios.get(`${apiURL}/calcularEficienciaDiaria.php?fecha=${fecha}&modulo=${modulo}&operarios=${operarios}`);
           // Validar estructura de respuesta
@@ -15,18 +16,19 @@ const useFetchData = () => {
             setData(response.data.respuesta);
             return response.data.respuesta; // ✅ Array garantizado
           } else {
-            console.error("Respuesta inválida:", response.data);
-            return []; // Retornar array vacío
+            setError(response.data);
+            throw new Error("Respuesta inválida:", response.data);
           }
         } catch (error) {
           console.error("Error en fetchData:", error);
           throw error;
-          return []; // Retornar array vacío
+        } finally {
+          setLoading(false);
         }
       }, [apiURL]);
         useEffect(() => {
             fetchData();
         }, [fetchData]);
-        return {datos, error, fetchData}
+        return {datos, error, fetchData, loading}
 }
 export default useFetchData;

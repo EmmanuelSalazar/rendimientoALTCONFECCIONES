@@ -67,7 +67,7 @@ const FechasDuales = () => {
     }
     return (
         <>
-            <Button type="primary" onClick={showModal}>Seleccionar entre dos rangos</Button>
+            <Button type="primary" onClick={showModal}>Seleccionar rango de fechas</Button>
             <Modal title="Selecciona dos fechas" open={visible} onOk={handleOk} onCancel={handleCancel} width={{xl: '70%', xxl: '70%'}}>
                     <Space className="my-2">
                         <strong>Seleccionar fecha</strong>

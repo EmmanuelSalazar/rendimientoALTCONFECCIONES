@@ -5,6 +5,14 @@
     overflow-x: auto;
     width: 100%;
 }
+.tablaLimitadaLargo {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+.tablaLimitadaAncho {
+    min-width: 100%;
+    overflow-x: auto;
+}
 .formulario {
     width: 100%;
 }
@@ -37,4 +45,9 @@
 .notificacion > div {
     min-width: 50%;
     font-size: 25px;
+}
+@media screen and (width < 768px) {
+    .tablaLimitadaLargo {
+        max-height: 300px;
+    }
 }

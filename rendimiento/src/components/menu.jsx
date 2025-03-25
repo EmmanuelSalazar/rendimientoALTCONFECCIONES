@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Menu } from 'antd'
-import { CaretDownOutlined } from '@ant-design/icons'
+import { CaretDownOutlined, TeamOutlined, BarsOutlined, FileAddOutlined, DatabaseOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
 import { ListaContext } from "../contexts/informacionGrafico";
 const items = [
@@ -28,16 +28,21 @@ const items = [
         },{
             label: <NavLink to="/referencias" className="noDecorativos">Referencias</NavLink>,
             key: 'referencias',
+            icon: <BarsOutlined />,
+            
             
         },{
             label: <NavLink to="/operarios" className="noDecorativos">Operarios</NavLink>,
-            key: 'operarios'
+            key: 'operarios',
+            icon: <TeamOutlined />
         },{
           label: <NavLink to="/registro_operaciones" className="noDecorativos">Registrar operaciones</NavLink>,
-          key: 'operaciones'
+          key: 'operaciones',
+          icon: <FileAddOutlined />,
       },{
         label: <NavLink to="/tablaRegistros" className="noDecorativos">Tabla de registros</NavLink>,
-        key: 'tablaRegistros'
+        key: 'tablaRegistros',
+        icon: <DatabaseOutlined />,
     }
 ];
 

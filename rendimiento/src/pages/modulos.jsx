@@ -23,7 +23,7 @@ function Modulo() {
             setModuloConMarca("3 (REYMON)")
           break;
         default:
-          setModuloConMarca(`${moduloEnLaUrl} (DESCONOCIDO)`)
+          setModuloConMarca(`${moduloEnLaUrl || 0} (DESCONOCIDO)`)
           break;
       }
     },[moduloEnLaUrl]);
@@ -33,7 +33,7 @@ function Modulo() {
           <PanelNotificaciones />
         </Row>
         <Row>
-          <Col lg="3" xs={12} sm={6} md={4} >
+          <Col lg={3} xs={12} sm={12} md={4} >
             <Row className='border border-black mb-2 me-1 bg-black  rounded text-light'>
               <IncentivoQuincena />
             </Row>
@@ -44,7 +44,7 @@ function Modulo() {
              <PorcentajeDeEficienciaDiaria />
             </Row>
           </Col>
-          <Col lg="9" xs={12} sm={6} md={4} className='bg-black rounded border border-primary text-light text-center' >            
+          <Col lg={9} xs={12} sm={12} md={4} className='bg-black rounded border border-primary text-light text-center' >            
             <h1 className="text-white"><strong>TABLERO MODULO {moduloConMarca}</strong></h1>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                   <HorizontalBarChart />
